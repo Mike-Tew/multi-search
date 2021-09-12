@@ -1,4 +1,4 @@
-from tkinter import Tk, LabelFrame, Entry, Button, Label, Checkbutton, END
+from tkinter import Tk, LabelFrame, Entry, Button, Label, Checkbutton, IntVar, END
 from time import sleep
 import webbrowser
 
@@ -15,6 +15,7 @@ class Gui(Tk):
             "Audible": "https://www.audible.com/search?keywords=PARAM&ref=a_search_t1_header_search",
             "Amazon": "https://www.amazon.com/s?k=PARAM&ref=nb_sb_noss",
         }
+        self.checkbox_dict = {key: 0 for key in self.search_engines}
 
         self.search_frame = LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -26,6 +27,24 @@ class Gui(Tk):
             self.search_frame, text="SEARCH", command=self.perform_search
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
+
+        self.engine_frame = LabelFrame(self, text="Search Engines")
+        self.engine_frame.grid(row=1, column=0)
+        for engine in self.search_engines:
+            self.checkbox_dict[engine] = IntVar()
+            c = Checkbutton(
+                self.engine_frame, text=engine, variable=self.checkbox_dict[engine]
+            ).pack()
+
+        self.clear_button = Button(
+            self.engine_frame, text="Clear", command=self.show_values
+        )
+        self.clear_button.pack()
+        print(self.checkbox_dict)
+
+    def show_values(self):
+        print(self.checkbox_dict["Google"].get())
+        print(self.checkbox_dict["Amazon"])
 
     def perform_search(self):
         search_params = self.search_box.get().strip()
