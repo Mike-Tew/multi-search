@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from time import sleep
 from tkinter import ttk
 
+from search_engines import search_engines
+
 
 @dataclass
 class SearchEngine:
@@ -14,35 +16,11 @@ class SearchEngine:
     category: str
 
 
-search_engines = [
-    SearchEngine("Google", "https://www.google.com/search?q=PARAM", "search"),
-    SearchEngine(
-        "GoodReads",
-        "https://www.goodreads.com/search?utf8=%E2%9C%93&q=PARAM&search_type=books&search%5Bfield%5D=on",
-        "search",
-    ),
-    SearchEngine(
-        "Audible",
-        "https://www.audible.com/search?keywords=PARAM&ref=a_search_t1_header_search",
-        "search",
-    ),
-    SearchEngine("Amazon", "https://www.amazon.com/s?k=PARAM&ref=nb_sb_noss", "search"),
-]
-
-
 class Gui(tk.Tk):
-    def __init__(self):
+    def __init__(self, search_engines):
         super().__init__()
         self.title("Quick Web Search")
         self.geometry("+1000+300")
-
-        self.search_engines = {
-            "Google": "https://www.google.com/search?q=PARAM",
-            "GoodReads": "https://www.goodreads.com/search?utf8=%E2%9C%93&q=PARAM&search_type=books&search%5Bfield%5D=on",
-            "Audible": "https://www.audible.com/search?keywords=PARAM&ref=a_search_t1_header_search",
-            "Amazon": "https://www.amazon.com/s?k=PARAM&ref=nb_sb_noss",
-        }
-        self.checkbox_dict = {key: 0 for key in self.search_engines}
 
         self.search_frame = tk.LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -57,17 +35,21 @@ class Gui(tk.Tk):
 
         self.engine_frame = tk.LabelFrame(self, text="Search Engines")
         self.engine_frame.grid(row=1, column=0)
+
+        self.search_engines = [
+            SearchEngine(engine["name"], engine["search str"], engine["category"])
+            for engine in search_engines
+        ]
         for engine in self.search_engines:
-            self.checkbox_dict[engine] = tk.IntVar()
+            engine.variable = tk.IntVar()
             tk.Checkbutton(
-                self.engine_frame, text=engine, variable=self.checkbox_dict[engine]
+                self.engine_frame, text=engine.name, variable=engine.variable
             ).pack()
 
         self.clear_button = tk.Button(
             self.engine_frame, text="Clear", command=self.show_values
         )
         self.clear_button.pack()
-        # print(self.checkbox_dict)
 
     def show_values(self):
         print(self.checkbox_dict["Google"].get())
@@ -89,5 +71,5 @@ class Gui(tk.Tk):
 
 
 if __name__ == "__main__":
-    gui = Gui()
+    gui = Gui(search_engines)
     gui.mainloop()
