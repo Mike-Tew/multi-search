@@ -4,19 +4,6 @@ from time import sleep
 import webbrowser
 
 
-class LabelCheck(ttk.Frame):
-    """A Label and Checkbox combined together."""
-
-    def __init__(self, parent, label, inp_cls, inp_args, *arg, **kwargs):
-        super().__init__(parent, *arg, **kwargs)
-
-        self.label = tk.Label(self, text=label, anchor="e")
-        self.input = inp_cls(self, **inp_args)
-        self.columnconfigure(1, weight=1)
-        self.input.grid(sticky=tk.E + tk.W)
-        self.label.grid(row=0, column=1, sticky=tk.E + tk.W)
-
-
 class Gui(tk.Tk):
     def __init__(self):
         super().__init__()
