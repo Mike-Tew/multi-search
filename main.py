@@ -1,9 +1,23 @@
-from tkinter import Tk, LabelFrame, Entry, Button, Label, Checkbutton, IntVar, END
+import tkinter as tk
+from tkinter import ttk
 from time import sleep
 import webbrowser
 
 
-class Gui(Tk):
+class LabelCheck(ttk.Frame):
+    """A Label and Checkbox combined together."""
+
+    def __init__(self, parent, label, inp_cls, inp_args, *arg, **kwargs):
+        super().__init__(parent, *arg, **kwargs)
+
+        self.label = tk.Label(self, text=label, anchor="e")
+        self.input = inp_cls(self, **inp_args)
+        self.columnconfigure(1, weight=1)
+        self.input.grid(sticky=tk.E + tk.W)
+        self.label.grid(row=0, column=1, sticky=tk.E + tk.W)
+
+
+class Gui(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Quick Web Search")
@@ -17,26 +31,26 @@ class Gui(Tk):
         }
         self.checkbox_dict = {key: 0 for key in self.search_engines}
 
-        self.search_frame = LabelFrame(self, text="Search")
+        self.search_frame = tk.LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
-        self.search_box = Entry(self.search_frame)
+        self.search_box = tk.Entry(self.search_frame)
         self.search_box.grid(row=0, column=0, padx=10, pady=10)
         self.search_box.bind("<Return>", lambda x: self.perform_search())
         self.search_box.focus_set()
-        self.search_button = Button(
+        self.search_button = tk.Button(
             self.search_frame, text="SEARCH", command=self.perform_search
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
 
-        self.engine_frame = LabelFrame(self, text="Search Engines")
+        self.engine_frame = tk.LabelFrame(self, text="Search Engines")
         self.engine_frame.grid(row=1, column=0)
         for engine in self.search_engines:
-            self.checkbox_dict[engine] = IntVar()
-            c = Checkbutton(
+            self.checkbox_dict[engine] = tk.IntVar()
+            tk.Checkbutton(
                 self.engine_frame, text=engine, variable=self.checkbox_dict[engine]
             ).pack()
 
-        self.clear_button = Button(
+        self.clear_button = tk.Button(
             self.engine_frame, text="Clear", command=self.show_values
         )
         self.clear_button.pack()
@@ -48,7 +62,7 @@ class Gui(Tk):
 
     def perform_search(self):
         search_params = self.search_box.get().strip()
-        self.search_box.delete(0, END)
+        self.search_box.delete(0, tk.END)
         if len(search_params) != 0:
             format_param = "+".join(search_params.split())
             for engine in self.search_engines.values():
