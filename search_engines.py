@@ -9,12 +9,12 @@ search_engines = [
     {
         "name": "GoodReads",
         "search str": "https://www.goodreads.com/search?utf8=%E2%9C%93&q=PARAM&search_type=books&search%5Bfield%5D=on",
-        "category": "Search",
+        "category": "Books",
     },
     {
         "name": "Audible",
         "search str": "https://www.audible.com/search?keywords=PARAM&ref=a_search_t1_header_search",
-        "category": "Search",
+        "category": "Books",
     },
     {
         "name": "Amazon",

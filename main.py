@@ -19,6 +19,18 @@ class SearchEngine:
         self.variable = tk.IntVar()
 
 
+class CategoryFrame(ttk.LabelFrame):
+    """Class for wrapping search engine checkboxes into specific categories."""
+
+    def __init__(self, parent, name, engines, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.configure(text=name)
+
+        for engine in engines:
+            tk.Checkbutton(self, text=engine.name, variable=engine.variable).pack()
+        self.clear_btn = tk.Button(self, text="Select All").pack()
+
+
 class Gui(tk.Tk):
     def __init__(self, categories, search_engines):
         super().__init__()
@@ -36,25 +48,24 @@ class Gui(tk.Tk):
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
 
-        self.engine_frame = tk.LabelFrame(self, text="Search Engines")
-        self.engine_frame.grid(row=1, column=0)
-
         self.search_engines = [
             SearchEngine(engine["name"], engine["search str"], engine["category"])
             for engine in search_engines
         ]
 
-        for engine in self.search_engines:
-            tk.Checkbutton(
-                self.engine_frame, text=engine.name, variable=engine.variable
-            ).pack()
+        cats_frame = tk.Frame(self)
+        cats_frame.grid(row=1, column=0)
 
-        self.clear_button = tk.Button(
-            self.engine_frame, text="Clear", command=self._on_clear
-        )
-        self.clear_button.pack()
-        for engine in self.search_engines:
-            print(engine)
+        for cat in categories:
+            engines = [eng for eng in self.search_engines if eng.category == cat]
+            CategoryFrame(cats_frame, cat, engines).pack(
+                side=tk.LEFT, ipadx=10, padx=10
+            )
+
+        # self.clear_button = tk.Button(
+        #     self.engine_frame, text="Clear", command=self._on_clear
+        # )
+        # self.clear_button.pack()
 
     def _on_clear(self):
         print(self.search_engines[0].variable.get())
@@ -74,8 +85,6 @@ class Gui(tk.Tk):
                 sleep(0.05)
 
         # self.destroy()
-
-
 
 
 if __name__ == "__main__":
