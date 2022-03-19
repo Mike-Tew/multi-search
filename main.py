@@ -58,6 +58,11 @@ class Gui(tk.Tk):
         self.search_box.grid(row=0, column=0, padx=10, pady=10)
         self.search_box.bind("<Return>", lambda x: self._on_search())
         self.search_box.focus_set()
+
+        # self.scale_bar = ttk.Scale(self, from_=1, to=100)
+        # self.scale_bar.grid(row=0, column=1)
+        # print(self.scale_bar.get())
+
         self.search_button = tk.Button(
             self.search_frame, text="SEARCH", command=self._on_search
         )
@@ -77,11 +82,6 @@ class Gui(tk.Tk):
                 side=tk.LEFT, ipadx=10, padx=10
             )
 
-        # self.clear_button = tk.Button(
-        #     self.engine_frame, text="Clear", command=self._on_clear
-        # )
-        # self.clear_button.pack()
-
     def _on_clear(self):
         print(self.search_engines[0].variable.get())
 
@@ -92,7 +92,6 @@ class Gui(tk.Tk):
             return
 
         for engine in self.search_engines:
-            print(engine.variable.get())
             if engine.variable.get():
                 format_param = "+".join(search_params.split())
                 search_string = engine.search_str.replace("PARAM", format_param)
