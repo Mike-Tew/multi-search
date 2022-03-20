@@ -29,6 +29,7 @@ class CategoryFrame(ttk.LabelFrame):
         self.vars = [var.variable for var in engines]
         for engine in engines:
             tk.Checkbutton(self, text=engine.name, variable=engine.variable).pack()
+
         self.select_btn = tk.Button(
             self, text="Select All", command=self._on_select
         ).pack()

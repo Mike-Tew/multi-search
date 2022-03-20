@@ -1,4 +1,4 @@
-categories = ["Search", "Shopping", "Media", "Books"]
+categories = ["Search", "Private Search", "Shopping", "Media", "Books"]
 
 search_engines = [
     {
@@ -13,12 +13,37 @@ search_engines = [
     },
     {
         "name": "Yahoo",
-        "search str": "https://search.yahoo.com/search?p=PARAM&fr=yfp-t&ei=UTF-8&fp=1",
+        "search str": "https://search.yahoo.com/search?p=PARAM",
         "category": "Search",
     },
     {
+        "name": "Wikipedia",
+        "search str": "https://en.wikipedia.org/w/index.php?search=PARAM",
+        "category": "Search",
+    },
+    {
+        "name": "Brave",
+        "search str": "https://search.brave.com/search?q=PARAM",
+        "category": "Private Search",
+    },
+    {
+        "name": "Swisscows",
+        "search str": "https://swisscows.com/web?query=PARAM",
+        "category": "Private Search",
+    },
+    {
+        "name": "Gibiru",
+        "search str": "https://gibiru.com/results.html?q=PARAM",
+        "category": "Private Search",
+    },
+    {
+        "name": "DuckDuckGo",
+        "search str": "https://duckduckgo.com/?q=PARAM&t=h_",
+        "category": "Private Search",
+    },
+    {
         "name": "Amazon",
-        "search str": "https://www.amazon.com/s?k=PARAM&ref=nb_sb_noss",
+        "search str": "https://www.amazon.com/s?k=PARAM",
         "category": "Shopping",
     },
     {
@@ -33,7 +58,7 @@ search_engines = [
     },
     {
         "name": "Ebay",
-        "search str": "https://www.ebay.com/sch/i.html?_from=R40&_trksid=m570.l1313&_sacat=0&_nkw=PARAM",
+        "search str": "https://www.ebay.com/sch/i.html?_nkw=PARAM",
         "category": "Shopping",
     },
     {
@@ -58,12 +83,22 @@ search_engines = [
     },
     {
         "name": "GoodReads",
-        "search str": "https://www.goodreads.com/search?utf8=%E2%9C%93&q=PARAM&search_type=books&search%5Bfield%5D=on",
+        "search str": "https://www.goodreads.com/search?q=PARAM",
         "category": "Books",
     },
     {
         "name": "Audible",
-        "search str": "https://www.audible.com/search?keywords=PARAM&ref=a_search_t1_header_search",
+        "search str": "https://www.audible.com/search?keywords=PARAM",
+        "category": "Books",
+    },
+    {
+        "name": "Amazon Books",
+        "search str": "https://www.amazon.com/s?k=PARAM&i=stripbooks",
+        "category": "Books",
+    },
+    {
+        "name": "Google Books",
+        "search str": "https://www.google.com/search?tbm=bks&q=PARAM",
         "category": "Books",
     },
 ]
