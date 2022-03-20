@@ -1,3 +1,8 @@
+# TODO
+# Improve styling
+# Add a Clear All button
+# Add an opening speed slider with tooltip
+
 import tkinter as tk
 import webbrowser
 from dataclasses import dataclass
@@ -28,9 +33,11 @@ class CategoryFrame(ttk.LabelFrame):
 
         self.vars = [var.variable for var in engines]
         for engine in engines:
-            tk.Checkbutton(self, text=engine.name, variable=engine.variable).pack()
+            tk.Checkbutton(self, text=engine.name, variable=engine.variable).pack(
+                anchor="w"
+            )
 
-        self.select_btn = tk.Button(
+        self.select_btn = ttk.Button(
             self, text="Select All", command=self._on_select
         ).pack()
 
@@ -60,11 +67,7 @@ class Gui(tk.Tk):
         self.search_box.bind("<Return>", lambda x: self._on_search())
         self.search_box.focus_set()
 
-        # self.scale_bar = ttk.Scale(self, from_=1, to=100)
-        # self.scale_bar.grid(row=0, column=1)
-        # print(self.scale_bar.get())
-
-        self.search_button = tk.Button(
+        self.search_button = ttk.Button(
             self.search_frame, text="SEARCH", command=self._on_search
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
@@ -74,8 +77,14 @@ class Gui(tk.Tk):
             for engine in search_engines
         ]
 
+        ttk.Button(self, text="Clear All", command=self._on_clear).grid(row=0, column=1)
+
+        self.scale_bar = ttk.Scale(self, from_=1, to=150)
+        self.scale_bar.grid(row=0, column=2)
+        self.scale_bar.set(50)
+
         cats_frame = tk.Frame(self)
-        cats_frame.grid(row=1, column=0)
+        cats_frame.grid(row=1, column=0, columnspan=3)
 
         for cat in categories:
             engines = [eng for eng in self.search_engines if eng.category == cat]
@@ -84,7 +93,8 @@ class Gui(tk.Tk):
             )
 
     def _on_clear(self):
-        print(self.search_engines[0].variable.get())
+        for engine in self.search_engines:
+            engine.variable.set(0)
 
     def _on_search(self):
         search_params = self.search_box.get().strip()
@@ -93,11 +103,13 @@ class Gui(tk.Tk):
             return
 
         for engine in self.search_engines:
-            if engine.variable.get():
-                format_param = "+".join(search_params.split())
-                search_string = engine.search_str.replace("PARAM", format_param)
-                webbrowser.open(search_string)
-                sleep(0.05)
+            if not engine.variable.get():
+                continue
+
+            format_param = "+".join(search_params.split())
+            search_string = engine.search_str.replace("PARAM", format_param)
+            webbrowser.open(search_string)
+            sleep(self.scale_bar.get() / 100)
 
         # self.destroy()
 
