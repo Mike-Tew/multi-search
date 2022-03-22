@@ -17,10 +17,10 @@ class Gui(tk.Tk):
         self.title("Quick Web Search")
         self.geometry("+1000+300")
 
-        self.search_frame = tk.LabelFrame(self, text="Search")
+        self.search_frame = ttk.LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
         self.search_string = tk.StringVar()
-        self.search_box = tk.Entry(self.search_frame, textvariable=self.search_string)
+        self.search_box = ttk.Entry(self.search_frame, textvariable=self.search_string)
         self.search_box.grid(row=0, column=0, padx=10, pady=10)
         self.search_box.bind("<Return>", lambda x: self._on_search())
         self.search_box.focus_set()
@@ -30,18 +30,22 @@ class Gui(tk.Tk):
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
 
-        ttk.Button(self, text="Clear All", command=self._on_clear).grid(row=0, column=1)
-
-        self.scale_bar = ttk.Scale(self, from_=0.01, to=1.5)
-        self.scale_bar.grid(row=0, column=2)
+        self.scale_frame = ttk.LabelFrame(self, text="Speed")
+        self.scale_frame.grid(row=0, column=1, sticky="W")
+        self.scale_bar = ttk.Scale(self.scale_frame, from_=0.01, to=1.5, length=150)
+        self.scale_bar.grid(row=0, column=0, padx=30, pady=5)
         self.scale_bar.set(0.5)
+
+        ttk.Button(self, text="Clear All", command=self._on_clear).grid(
+            row=0, column=2, sticky="W"
+        )
 
         self.search_engines = [
             SearchEngine(engine["name"], engine["search str"], engine["category"])
             for engine in search_engines
         ]
 
-        cats_frame = tk.Frame(self)
+        cats_frame = ttk.Frame(self)
         cats_frame.grid(row=1, column=0, columnspan=3)
 
         for cat in categories:
