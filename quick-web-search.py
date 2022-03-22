@@ -1,7 +1,5 @@
 # TODO
 # Improve styling
-# Add a Clear All button
-# Add an opening speed slider with tooltip
 
 import tkinter as tk
 import webbrowser
@@ -10,48 +8,8 @@ from time import sleep
 from tkinter import ttk
 
 from search_engines import categories, search_engines
-
-
-@dataclass
-class SearchEngine:
-    """Dataclass for storing search engine information."""
-
-    name: str
-    search_str: str
-    category: str
-
-    def __post_init__(self):
-        self.variable = tk.IntVar()
-
-
-class CategoryFrame(ttk.LabelFrame):
-    """Class for wrapping search engine checkboxes into specific categories."""
-
-    def __init__(self, parent, name, engines, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
-        self.configure(text=name)
-
-        self.vars = [var.variable for var in engines]
-        for engine in engines:
-            tk.Checkbutton(self, text=engine.name, variable=engine.variable).pack(
-                anchor="w"
-            )
-
-        self.select_btn = ttk.Button(
-            self, text="Select All", command=self._on_select
-        ).pack()
-
-    def _on_select(self):
-        var_values = [var.get() for var in self.vars]
-        if not any(var_values):
-            for var in self.vars:
-                var.set(1)
-        elif all(var_values):
-            for var in self.vars:
-                var.set(0)
-        else:
-            for var in self.vars:
-                var.set(1)
+from utils.search_engines import SearchEngine
+from utils.category_frame import CategoryFrame
 
 
 class Gui(tk.Tk):
