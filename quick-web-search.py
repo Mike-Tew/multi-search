@@ -3,12 +3,11 @@
 
 import tkinter as tk
 import webbrowser
-from dataclasses import dataclass
 from time import sleep
 from tkinter import ttk
 
-from search_engines import categories, search_engines
-from utils.search_engines import SearchEngine
+from search_engine_data import categories, search_engines
+from utils.search_engine_class import SearchEngine
 from utils.category_frame import CategoryFrame
 
 
