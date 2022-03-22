@@ -62,7 +62,8 @@ class Gui(tk.Tk):
 
         self.search_frame = tk.LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
-        self.search_box = tk.Entry(self.search_frame)
+        self.search_string = tk.StringVar()
+        self.search_box = tk.Entry(self.search_frame, textvariable=self.search_string)
         self.search_box.grid(row=0, column=0, padx=10, pady=10)
         self.search_box.bind("<Return>", lambda x: self._on_search())
         self.search_box.focus_set()
@@ -72,16 +73,16 @@ class Gui(tk.Tk):
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
 
+        ttk.Button(self, text="Clear All", command=self._on_clear).grid(row=0, column=1)
+
+        self.scale_bar = ttk.Scale(self, from_=0.01, to=1.5)
+        self.scale_bar.grid(row=0, column=2)
+        self.scale_bar.set(0.5)
+
         self.search_engines = [
             SearchEngine(engine["name"], engine["search str"], engine["category"])
             for engine in search_engines
         ]
-
-        ttk.Button(self, text="Clear All", command=self._on_clear).grid(row=0, column=1)
-
-        self.scale_bar = ttk.Scale(self, from_=1, to=150)
-        self.scale_bar.grid(row=0, column=2)
-        self.scale_bar.set(50)
 
         cats_frame = tk.Frame(self)
         cats_frame.grid(row=1, column=0, columnspan=3)
@@ -97,21 +98,18 @@ class Gui(tk.Tk):
             engine.variable.set(0)
 
     def _on_search(self):
-        search_params = self.search_box.get().strip()
-        self.search_box.delete(0, tk.END)
-        if len(search_params) == 0:
+        search_text = self.search_string.get().strip()
+        if len(search_text) == 0:
             return
 
         for engine in self.search_engines:
             if not engine.variable.get():
                 continue
 
-            format_param = "+".join(search_params.split())
+            format_param = "+".join(search_text.split())
             search_string = engine.search_str.replace("PARAM", format_param)
             webbrowser.open(search_string)
-            sleep(self.scale_bar.get() / 100)
-
-        # self.destroy()
+            sleep(self.scale_bar.get())
 
 
 if __name__ == "__main__":
