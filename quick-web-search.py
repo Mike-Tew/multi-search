@@ -14,6 +14,7 @@ from utils.category_frame import CategoryFrame
 class Gui(tk.Tk):
     def __init__(self, categories, search_engines):
         super().__init__()
+
         self.title("Quick Web Search")
         self.geometry("+1000+300")
 
@@ -30,13 +31,13 @@ class Gui(tk.Tk):
         )
         self.search_button.grid(row=0, column=1, padx=[0, 10])
 
-        self.scale_frame = ttk.LabelFrame(self, text="Speed")
+        self.scale_frame = ttk.LabelFrame(self, text="Search Speed")
         self.scale_frame.grid(row=0, column=1, sticky="W")
-        self.scale_bar = ttk.Scale(self.scale_frame, from_=0.01, to=1.5, length=150)
+        self.scale_bar = ttk.Scale(self.scale_frame, from_=1.5, to=0.01, length=150)
         self.scale_bar.grid(row=0, column=0, padx=30, pady=5)
         self.scale_bar.set(0.5)
 
-        ttk.Button(self, text="Clear All", command=self._on_clear).grid(
+        ttk.Button(self, text="Clear All", command=self._on_style).grid(
             row=0, column=2, sticky="W"
         )
 
@@ -53,6 +54,14 @@ class Gui(tk.Tk):
             CategoryFrame(cats_frame, cat, engines).pack(
                 side=tk.LEFT, ipadx=10, padx=10
             )
+
+    def _on_style(self):
+        # print(self.style)
+
+        self.style.configure("TScale", foreground="red")
+        # self.style.configure("TButton", background="red")
+        # win_cls2 = self.winfo_class()
+        # self.style.configure("Button.TButton", font=("Helvetica", 20))
 
     def _on_clear(self):
         for engine in self.search_engines:
