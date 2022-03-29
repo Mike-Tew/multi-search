@@ -1,6 +1,3 @@
-# TODO
-# Improve styling
-
 import tkinter as tk
 import webbrowser
 from time import sleep
@@ -10,20 +7,21 @@ from search_engine_data import categories, search_engines
 from utils.search_engine_class import SearchEngine
 from utils.category_frame import CategoryFrame
 
+from pprint import pprint
 
 class Gui(tk.Tk):
     def __init__(self, categories, search_engines):
         super().__init__()
 
         self.title("Quick Web Search")
-        self.geometry("+1000+300")
+        self.geometry("+700+300")
+        self.bind("<Return>", lambda x: self._on_search())
 
         self.search_frame = ttk.LabelFrame(self, text="Search")
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
         self.search_string = tk.StringVar()
         self.search_box = ttk.Entry(self.search_frame, textvariable=self.search_string)
         self.search_box.grid(row=0, column=0, padx=10, pady=10)
-        self.search_box.bind("<Return>", lambda x: self._on_search())
         self.search_box.focus_set()
 
         self.search_button = ttk.Button(
@@ -33,7 +31,7 @@ class Gui(tk.Tk):
 
         self.scale_frame = ttk.LabelFrame(self, text="Search Speed")
         self.scale_frame.grid(row=0, column=1, sticky="W")
-        self.scale_bar = ttk.Scale(self.scale_frame, from_=1.5, to=0.01, length=150)
+        self.scale_bar = ttk.Scale(self.scale_frame, from_=1.5, to=0.01, length=250)
         self.scale_bar.grid(row=0, column=0, padx=30, pady=5)
         self.scale_bar.set(0.5)
 
@@ -47,21 +45,13 @@ class Gui(tk.Tk):
         ]
 
         cats_frame = ttk.Frame(self)
-        cats_frame.grid(row=1, column=0, columnspan=3)
+        cats_frame.grid(row=1, column=0, columnspan=3, padx=15, pady=[10, 20])
 
         for cat in categories:
             engines = [eng for eng in self.search_engines if eng.category == cat]
             CategoryFrame(cats_frame, cat, engines).pack(
                 side=tk.LEFT, ipadx=10, padx=10
             )
-
-    def _on_style(self):
-        # print(self.style)
-
-        self.style.configure("TScale", foreground="red")
-        # self.style.configure("TButton", background="red")
-        # win_cls2 = self.winfo_class()
-        # self.style.configure("Button.TButton", font=("Helvetica", 20))
 
     def _on_clear(self):
         for engine in self.search_engines:
