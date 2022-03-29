@@ -7,8 +7,6 @@ from search_engine_data import categories, search_engines
 from utils.search_engine_class import SearchEngine
 from utils.category_frame import CategoryFrame
 
-from pprint import pprint
-
 
 class Gui(tk.Tk):
     def __init__(self, categories, search_engines):
